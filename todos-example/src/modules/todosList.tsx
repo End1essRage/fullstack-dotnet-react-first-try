@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { TodoItem } from "./todoItem";
 
 export const TodosList = () => {
 
@@ -8,7 +9,7 @@ export const TodosList = () => {
 	return (
 		<div className='todos'>
 			<ul>
-				{items.map((el) => <li>{el.text}</li>)}
+				{items.map((el) => <TodoItem id={el.id} completed={el.completed} title={el.title} />)}
 			</ul>
 		</div>
 	);

@@ -1,5 +1,5 @@
 import { Action, PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { FETCH_TODOS } from "../routes";
+import { ROUTE_TODOS } from "../routes";
 
 interface TodoState {
 	todos: Todo[],
@@ -8,18 +8,111 @@ interface TodoState {
 }
 
 class Todo {
-	constructor(public text: string) { }
+	constructor(public title: string, public completed: boolean) { }
 	public readonly id: number = 0;
 }
 
 export const fetchTodos = createAsyncThunk(
 	'todos/fetchTodos',
-	async () => {
-		const responce = await fetch(FETCH_TODOS);
+	async (_, { rejectWithValue }) => {
+		try {
+			const response = await fetch(ROUTE_TODOS);
 
-		const data = await responce.json();
+			if (!response.ok) {
+				throw new Error('Server Error!');
+			}
 
-		return data;
+			const data = await response.json();
+
+			return data;
+		}
+		catch (error) {
+			let message = 'Server Error';
+
+			if (error instanceof Error)
+				message = error.message;
+
+			return rejectWithValue(message);
+		}
+	}
+);
+
+export const toggleComplete = createAsyncThunk(
+	'todos/toggleComplete',
+	async (id: number, { rejectWithValue, dispatch }) => {
+		try {
+			const response = await fetch(ROUTE_TODOS + `?id=${id}`, { method: 'PATCH' });
+
+			if (!response.ok) {
+				throw new Error('Server Error!');
+			}
+
+			dispatch(toggle(id));
+		}
+		catch (error) {
+			let message = 'Server Error';
+
+			if (error instanceof Error)
+				message = error.message;
+
+			return rejectWithValue(message);
+		}
+	}
+);
+
+export const deleteTodo = createAsyncThunk(
+	'todos/deleteTodo',
+	async (id: number, { rejectWithValue, dispatch }) => {
+		try {
+			const response = await fetch(ROUTE_TODOS + `?id=${id}`, { method: 'DELETE' });
+
+			if (!response.ok) {
+				throw new Error('Server Error!');
+			}
+
+			dispatch(remove(id));
+		}
+		catch (error) {
+			let message = 'Server Error';
+
+			if (error instanceof Error)
+				message = error.message;
+
+			return rejectWithValue(message);
+		}
+	}
+);
+
+export const createTodo = createAsyncThunk(
+	'todos/createTodo',
+	async (title: string, { rejectWithValue, dispatch }) => {
+		try {
+			const response = await fetch(ROUTE_TODOS, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					title
+				})
+			});
+
+			if (!response.ok) {
+				throw new Error('Server Error!');
+			}
+
+			const data: Todo = await response.json();
+
+			dispatch(add(data));
+		}
+		catch (error) {
+			let message = 'Server Error';
+
+			if (error instanceof Error)
+				message = error.message;
+
+			return rejectWithValue(message);
+		}
 	}
 );
 
@@ -33,8 +126,16 @@ export const todosSliсe = createSlice({
 	name: 'todos',
 	initialState,
 	reducers: {
-		add: (state, action: PayloadAction<string>) => {
-			state.todos.push(new Todo(action.payload));
+		add: (state, action: PayloadAction<Todo>) => {
+			state.todos.push(action.payload);
+		},
+		toggle: (state, action: PayloadAction<number>) => {
+			const item = state.todos.find(c => c.id === action.payload);
+			if (item !== undefined)
+				item.completed = !item.completed;
+		},
+		remove: (state, action: PayloadAction<number>) => {
+			state.todos = state.todos.filter(todo => todo.id !== action.payload);
 		}
 	},
 	extraReducers(builder) {
@@ -48,12 +149,20 @@ export const todosSliсe = createSlice({
 			state.error = '';
 		})
 		builder.addCase(fetchTodos.rejected, (state, action) => {
-			state.status = 'error'
-			state.error = 'error text';
+			console.log('fecth error');
+		})
+		builder.addCase(toggleComplete.rejected, (state, action) => {
+			console.log('toggle error');
+		})
+		builder.addCase(deleteTodo.rejected, (state, action) => {
+			console.log('delete error');
+		})
+		builder.addCase(createTodo.rejected, (state, action) => {
+			console.log('add error');
 		})
 	},
 });
 
-export const { add } = todosSliсe.actions;
+const { add, toggle, remove } = todosSliсe.actions;
 
 export default todosSliсe.reducer;

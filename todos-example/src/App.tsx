@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './redux/store';
-import { add, fetchTodos } from './redux/todoSlice';
+import { createTodo, fetchTodos } from './redux/todoSlice';
 import { TodosList } from './modules/todosList';
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
 
   const onAddTodoClick = () => {
     if (todo.trim() !== '')
-      dispatch(add(todo));
+      dispatch(createTodo(todo));
     setTodo('');
   }
 

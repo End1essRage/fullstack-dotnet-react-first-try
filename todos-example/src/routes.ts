@@ -1,1 +1,1 @@
-export const FETCH_TODOS = 'http://localhost:5048/Todos';
+export const ROUTE_TODOS = 'http://localhost:5048/Todos';

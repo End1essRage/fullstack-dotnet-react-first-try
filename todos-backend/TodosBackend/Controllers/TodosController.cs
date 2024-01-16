@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TodosBackend.Data;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TodosBackend.Controllers
 {
@@ -17,23 +18,54 @@ namespace TodosBackend.Controllers
 		[HttpGet]
 		public async Task<ActionResult<List<Todo>>> GetAll()
 		{
-			Console.WriteLine("request");
 			var items = await _repository.GetAllTodos();
 			return Ok(items);
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateNew(string text)
+		public async Task<ActionResult<Todo>> CreateNew(TodoDTO dto)
 		{
+			Todo newTodo;
+
 			try
 			{
-				await _repository.AddTodo(text);
+                newTodo = await _repository.AddTodo(dto.Title);
 			}
 			catch (Exception e)
 			{
 				return BadRequest(e.Message);
 			}
-			return Ok();
+
+			return Ok(newTodo);
 		}
-	}
+
+		[HttpPatch]
+		public async Task<ActionResult> ToggleComplete(int id)
+		{
+			var item = await _repository.GetTodoById(id);
+			if(item == null)
+			{
+				return BadRequest();
+			}
+
+			await _repository.ToggleComplete(id);
+
+            return Ok();
+        }
+
+		[HttpDelete]
+        public async Task<ActionResult> DeleteTodo(int id)
+		{
+            var item = await _repository.GetTodoById(id);
+            if (item == null)
+            {
+                return BadRequest();
+            }
+
+            await _repository.DeleteTodo(id);
+
+            return Ok();
+        }
+
+    }
 }

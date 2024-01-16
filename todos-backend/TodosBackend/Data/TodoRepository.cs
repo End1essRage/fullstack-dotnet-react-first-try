@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TodosBackend.Data
 {
-    public class TodoRepository : ITodoRepository
+    public class TodoRepository
     {
         private TodosDbContext _context;
 
@@ -18,7 +18,7 @@ namespace TodosBackend.Data
         public async Task AddTodo(string text)
         {
             var item = new Todo();
-            item.Text = text;
+            item.Title = text;
             await _context.Todos.AddAsync(item);
         }
 
