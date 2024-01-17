@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TodosBackend.Data;
+using TodosBackend.CommunicationModes;
+using TodosBackend.Data.Abstractions;
+using TodosBackend.Models;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TodosBackend.Controllers
 {
-	[ApiController]
+    [ApiController]
 	[Route("[controller]")]
 	public class TodosController : ControllerBase
 	{
@@ -16,14 +19,16 @@ namespace TodosBackend.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult<List<Todo>>> GetAll()
+        [AllowAnonymous]
+        public async Task<ActionResult<List<Todo>>> GetAll()
 		{
 			var items = await _repository.GetAllTodos();
 			return Ok(items);
 		}
 
 		[HttpPost]
-		public async Task<ActionResult<Todo>> CreateNew(TodoDTO dto)
+        [Authorize]
+        public async Task<ActionResult<Todo>> CreateNew(TodoDTO dto)
 		{
 			Todo newTodo;
 
@@ -40,7 +45,8 @@ namespace TodosBackend.Controllers
 		}
 
 		[HttpPatch]
-		public async Task<ActionResult> ToggleComplete(int id)
+        [Authorize]
+        public async Task<ActionResult> ToggleComplete(int id)
 		{
 			var item = await _repository.GetTodoById(id);
 			if(item == null)
@@ -54,6 +60,7 @@ namespace TodosBackend.Controllers
         }
 
 		[HttpDelete]
+        [Authorize]
         public async Task<ActionResult> DeleteTodo(int id)
 		{
             var item = await _repository.GetTodoById(id);

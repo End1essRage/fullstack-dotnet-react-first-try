@@ -1,4 +1,7 @@
-﻿namespace TodosBackend.Data
+﻿using TodosBackend.Data.Abstractions;
+using TodosBackend.Models;
+
+namespace TodosBackend.Data
 {
     public class FakeTodosRepository : ITodoRepository
     {

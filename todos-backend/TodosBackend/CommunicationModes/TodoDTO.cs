@@ -1,4 +1,4 @@
-﻿namespace TodosBackend.Controllers
+﻿namespace TodosBackend.CommunicationModes
 {
     public class TodoDTO
     {
