@@ -7,10 +7,10 @@ export const TodosList = () => {
 	var items = useSelector((state: RootState) => state.todos.todos);
 
 	return (
-		<div className='todos'>
+		<>
 			<ul>
 				{items.map((el) => <TodoItem id={el.id} completed={el.completed} title={el.title} />)}
 			</ul>
-		</div>
+		</>
 	);
 }

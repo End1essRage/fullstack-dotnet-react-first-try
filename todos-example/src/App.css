@@ -1,24 +1,5 @@
-.App {
-  margin-top: 30px;
-  text-align: center;
-}
-
-ul {
-  list-style: none;
-}
-
-li {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-input:checked+span {
-  text-decoration: line-through;
-}
-
-span:last-child {
-  color: red;
-  cursor: pointer;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }

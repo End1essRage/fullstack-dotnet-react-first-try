@@ -1,5 +1,6 @@
 import { Action, PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { ROUTE_TODOS } from "../routes";
+import axios from "axios";
 
 interface TodoState {
 	todos: Todo[],
@@ -16,18 +17,18 @@ export const fetchTodos = createAsyncThunk(
 	'todos/fetchTodos',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await fetch(ROUTE_TODOS);
+			const response = await axios(ROUTE_TODOS);
 
-			if (!response.ok) {
+			if (response.status !== 200) {
 				throw new Error('Server Error!');
 			}
 
-			const data = await response.json();
+			const data = await response.data;
 
 			return data;
 		}
 		catch (error) {
-			let message = 'Server Error';
+			let message = '';
 
 			if (error instanceof Error)
 				message = error.message;
@@ -149,7 +150,7 @@ export const todosSliсe = createSlice({
 			state.error = '';
 		})
 		builder.addCase(fetchTodos.rejected, (state, action) => {
-			console.log('fecth error');
+			console.log(action.payload);
 		})
 		builder.addCase(toggleComplete.rejected, (state, action) => {
 			console.log('toggle error');
