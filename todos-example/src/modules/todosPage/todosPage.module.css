@@ -1,0 +1,42 @@
+.wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	background: url('D:\Projects\FullStack\TestTodoApp\todos-example\src\assets\LoginPageBackround.jpg') no-repeat;
+	background-size: cover;
+	background-position: center;
+}
+
+.body {
+	width: 60%;
+	display: flex;
+	justify-content: center;
+	background: transparent;
+	border: 2px solid rgba(255, 255, 255, .2);
+	backdrop-filter: blur(60px);
+	box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+	color: #fff;
+	border-radius: 10px;
+	padding: 30px 40px;
+}
+
+.body ul {
+	list-style: none;
+}
+
+.body li {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.body input:checked+span {
+	text-decoration: line-through;
+}
+
+.body span:last-child {
+	color: red;
+	cursor: pointer;
+}

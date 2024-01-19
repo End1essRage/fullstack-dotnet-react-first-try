@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { deleteTodo, toggleComplete } from "../redux/todoSlice";
-import { AppDispatch } from "../redux/store";
+import { deleteTodo, toggleComplete } from "../../redux/todosSlice";
+import { AppDispatch } from "../../redux/store";
 
 interface TodoProps {
 	id: number,

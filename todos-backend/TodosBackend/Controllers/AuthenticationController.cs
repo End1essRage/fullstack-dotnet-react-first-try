@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TodosBackend.CommunicationModes;
 using TodosBackend.Models;
@@ -6,8 +7,8 @@ using TodosBackend.Services.Abstractions;
 
 namespace TodosBackend.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
+    [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
         private IUserService _userService;
@@ -18,7 +19,8 @@ namespace TodosBackend.Controllers
             _userService = userService;
         }
 
-        [HttpPost("signup")]
+        [AllowAnonymous]
+        [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserDto request)
         {
             if (await _userService.FindByUserNameAsync(request.UserName) != null)
@@ -33,9 +35,11 @@ namespace TodosBackend.Controllers
             return Ok(user);
         }
 
-        [HttpPost("signin")]
+        [AllowAnonymous]
+        [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
+            Console.WriteLine(request.UserName + "  " + request.Password);
             var response = await _authService.CreateAccessTokenAsync(request.UserName, request.Password);
             if (response.Success == false)
             {
