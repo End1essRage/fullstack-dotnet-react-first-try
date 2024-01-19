@@ -22,15 +22,16 @@ interface UserDto {
 }
 
 axios.interceptors.request.use((config) => {
+	console.log('Request url:', config.url);
 	console.log('Request data:', config.data);
 	return config;
 });
 
 export const login = createAsyncThunk(
 	'auth/login',
-	async (user: UserDto, { rejectWithValue, dispatch }) => {
+	async (user: UserDto, { rejectWithValue }) => {
 		try {
-			const response = await axios.post<string>('/auth/login', user);
+			const response = await axios.post<string>('http://localhost:5048/auth/login', user);
 
 			if (response.status !== 200) {
 				throw new Error('Server Error!');
