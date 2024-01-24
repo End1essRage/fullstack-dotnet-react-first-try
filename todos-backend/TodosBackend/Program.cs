@@ -27,7 +27,10 @@ namespace TodosBackend
                 options.AddDefaultPolicy(
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod(); ;   
+                        policy.WithOrigins("http://localhost:3000")
+                         .AllowAnyHeader()
+                         .AllowAnyMethod()
+                         .AllowCredentials();
                     });
             });
 

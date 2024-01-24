@@ -25,6 +25,18 @@ namespace TodosBackend.Services
             await _repository.CreateUserAsync(user);
         }
 
+        public async Task UpdateUserRefreshToken(User user, RefreshToken refreshToken)
+        {
+            if (await _repository.FindByUserNameAsync(user.UserName) == null)
+                return;
+    
+            await _repository.UpdateRefreshToken(user.Id, refreshToken);
+        }
+        public async Task<User> FindUserByRefreshToken(string refreshToken)
+        {
+            return await _repository.FindByRefreshToken(refreshToken);
+        }
+
         public async Task<User> FindByUserNameAsync(string userName)
         {
             return await _repository.FindByUserNameAsync(userName);

@@ -1,12 +1,18 @@
-﻿namespace TodosBackend.CommunicationModes
+﻿using TodosBackend.Models;
+
+namespace TodosBackend.CommunicationModes
 {
     public class TokenResponse: BaseResponse
     {
-        public string Token { get; set; }
+        public string AccessToken { get; set; } = string.Empty;
+        public RefreshToken? RefreshToken { get; set; }
 
-        public TokenResponse(bool success, string message, string token) : base(success, message)
+        public TokenResponse(bool success, string message) : base(success, message) { }
+
+        public TokenResponse(bool success, string message, string accessToken, RefreshToken refreshToken) : base(success, message)
         {
-            Token = token;
+            AccessToken = accessToken;
+            RefreshToken = refreshToken;
         }
     }
 }

@@ -22,7 +22,6 @@ namespace TodosBackend.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<List<Todo>>> GetAll()
 		{
-			Console.WriteLine("todos request");
 			var items = await _repository.GetAllTodos();
 			return Ok(items);
 		}
@@ -74,6 +73,5 @@ namespace TodosBackend.Controllers
 
             return Ok();
         }
-
     }
 }

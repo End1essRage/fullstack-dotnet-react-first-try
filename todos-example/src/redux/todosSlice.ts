@@ -1,6 +1,7 @@
-import { Action, PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { ROUTE_TODOS } from "../routes";
-import axios from "axios";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import axios from "../api/api";
+import { API_TODOS } from "../api/routes";
+import { loadValue } from "../services/sessionStorage";
 
 interface TodoState {
 	todos: Todo[],
@@ -17,7 +18,7 @@ export const fetchTodos = createAsyncThunk(
 	'todos/fetchTodos',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await axios(ROUTE_TODOS);
+			const response = await axios(API_TODOS);
 
 			if (response.status !== 200) {
 				throw new Error('Server Error!');
@@ -42,9 +43,13 @@ export const toggleComplete = createAsyncThunk(
 	'todos/toggleComplete',
 	async (id: number, { rejectWithValue, dispatch }) => {
 		try {
-			const response = await fetch(ROUTE_TODOS + `?id=${id}`, { method: 'PATCH' });
+			const response = await axios.patch(API_TODOS, undefined, {
+				headers: {
+					'Authorization': 'Bearer ' + loadValue('token'),
+				},
+			});
 
-			if (!response.ok) {
+			if (response.status !== 200) {
 				throw new Error('Server Error!');
 			}
 
@@ -65,9 +70,13 @@ export const deleteTodo = createAsyncThunk(
 	'todos/deleteTodo',
 	async (id: number, { rejectWithValue, dispatch }) => {
 		try {
-			const response = await fetch(ROUTE_TODOS + `?id=${id}`, { method: 'DELETE' });
+			const response = await axios.delete(API_TODOS + `?id=${id}`, {
+				headers: {
+					'Authorization': 'Bearer ' + loadValue('token'),
+				},
+			});
 
-			if (!response.ok) {
+			if (response.status !== 200) {
 				throw new Error('Server Error!');
 			}
 
@@ -88,21 +97,18 @@ export const createTodo = createAsyncThunk(
 	'todos/createTodo',
 	async (title: string, { rejectWithValue, dispatch }) => {
 		try {
-			const response = await fetch(ROUTE_TODOS, {
-				method: 'POST',
+			const response = await axios.post(API_TODOS, JSON.stringify({ title }), {
 				headers: {
 					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' + loadValue('token'),
 				},
-				body: JSON.stringify({
-					title
-				})
 			});
 
-			if (!response.ok) {
+			if (response.status !== 200) {
 				throw new Error('Server Error!');
 			}
 
-			const data: Todo = await response.json();
+			const data: Todo = await response.data;
 
 			dispatch(add(data));
 		}

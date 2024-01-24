@@ -3,3 +3,19 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.DEV-wrapper {
+  background-color: aqua;
+  display: flex;
+}
+
+.DEV-route-link {
+  padding: 10px 5px 5px 10px;
+  margin: 10px;
+  text-align: center;
+  background-color: cadetblue;
+}
+
+.DEV-route-link a {
+  text-decoration: none;
+}

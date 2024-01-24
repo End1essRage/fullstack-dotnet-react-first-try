@@ -4,6 +4,7 @@ import { createTodo, fetchTodos } from '../../redux/todosSlice';
 import { TodosList } from './todosList';
 import { AppDispatch } from '../../redux/store';
 import styles from './todosPage.module.css'
+import { loadValue } from '../../services/sessionStorage';
 
 export const TodosPage = () => {
 	const [todo, setTodo] = React.useState('');

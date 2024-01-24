@@ -1,6 +1,8 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using TodosBackend.CommunicationModes;
 using TodosBackend.Models;
@@ -25,18 +27,41 @@ namespace TodosBackend.Services
 
             if (user == null)
             {
-                return new TokenResponse(false, "User not found", "");
+                return new TokenResponse(false, "User not found");
             }
 
             if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
             {
-                return new TokenResponse(false, "Password invalid", "");
+                return new TokenResponse(false, "Password invalid");
             }
 
-            return new TokenResponse(true, "Ok", CreateToken(user));
+            var refreshToken = CreateRefreshToken(user);
+            WriteRefreshToken(user, refreshToken);
+
+            return new TokenResponse(true, "Ok", CreateAcessToken(user), refreshToken);
         }
 
-        private string CreateToken(User user)
+        public async Task<TokenResponse> CreateAccessTokenAsync(string refreshToken)
+        {
+            Console.WriteLine("refreshing " + refreshToken);
+            var user = await _userService.FindUserByRefreshToken(refreshToken);
+
+            if (user == null)
+            {
+                return new TokenResponse(false, "Token Invalid");
+            }
+            if (user.TokenExpires < DateTime.Now)
+            {
+                return new TokenResponse(false, "Token Expired");
+            }
+
+            var newRefreshToken = CreateRefreshToken(user);
+            WriteRefreshToken(user, newRefreshToken);
+
+            return new TokenResponse(true, "Ok", CreateAcessToken(user), newRefreshToken);
+        }
+
+        private string CreateAcessToken(User user)
         {
             List<Claim> claims = new List<Claim>
             {
@@ -50,12 +75,30 @@ namespace TodosBackend.Services
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddHours(1),
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;
+        }
+
+        private void WriteRefreshToken(User user, RefreshToken token)
+        {
+            _userService.UpdateUserRefreshToken(user, token);
+            Console.WriteLine("writing " + token.Token);
+        }
+
+        private RefreshToken CreateRefreshToken(User user)
+        {
+            var token = new RefreshToken
+            {
+                Id = user.Id,
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Created = DateTime.Now,
+                Expires = DateTime.Now.AddDays(10)
+            };
+            return token;
         }
     }
 }

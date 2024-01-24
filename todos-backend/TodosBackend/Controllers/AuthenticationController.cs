@@ -8,6 +8,7 @@ using TodosBackend.Services.Abstractions;
 namespace TodosBackend.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("auth")]
     public class AuthenticationController : ControllerBase
     {
@@ -19,7 +20,6 @@ namespace TodosBackend.Controllers
             _userService = userService;
         }
 
-        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserDto request)
         {
@@ -35,18 +35,49 @@ namespace TodosBackend.Controllers
             return Ok(user);
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto request)
         {
-            Console.WriteLine(request.UserName + "  " + request.Password);
             var response = await _authService.CreateAccessTokenAsync(request.UserName, request.Password);
+
             if (response.Success == false)
             {
-                return BadRequest(response.Message);
+                return Unauthorized(response.Message);
             }
 
-            return Ok(response.Token);
+            SetRefreshToken(response.RefreshToken);
+
+            return Ok(response.AccessToken);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<string>> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(refreshToken))
+                return Unauthorized("No token");
+
+            var response = await _authService.CreateAccessTokenAsync(refreshToken);
+
+            if(response.Success == false)
+            {
+                return Unauthorized(response.Message);
+            }
+
+            SetRefreshToken(response.RefreshToken);
+
+            return Ok(response.AccessToken);
+        }
+
+        private void SetRefreshToken(RefreshToken refreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = refreshToken.Expires
+            };
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
         }
     }
 }
