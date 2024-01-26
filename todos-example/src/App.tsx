@@ -24,38 +24,40 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div className='DEV'>
-          <div className='DEV-wrapper'>
-            <div className='DEV-route-link'>
+        <div className='dev'>
+          <div className='dev-wrapper'>
+            <div className='dev-route-link'>
               <Link to='/todos'>TODOS</Link>
             </div>
-            <div className='DEV-route-link'>
+            <div className='dev-route-link'>
               <Link to='/login'>LOGIN</Link>
             </div>
-            <div className='DEV-route-link'>
+            <div className='dev-route-link'>
               <Link to='/register'>REGISTER</Link>
             </div>
-            <div className='DEV-route-link'>
+            <div className='dev-route-link'>
               <button onClick={handleRefreshToken}> REFRESH </button>
             </div>
-            <div className='DEV-route-link'>
+            <div className='dev-route-link'>
               <button onClick={handleLogout}> LOGOUT </button>
             </div>
           </div>
         </div>
       </header>
-      <Routes>
-        <Route path='/'
-          Component={() => isAuthed ? <HomePage /> : <Navigate to="/login" replace={true} />} />
-        <Route path='/login'
-          Component={() => <LoginPage />} />
-        <Route path='/register'
-          Component={() => <RegisterPage />} />
-        <Route path='/todos'
-          Component={() => isAuthed ? <TodosPage /> : <Navigate to="/login" replace={true} />} />
-        <Route path='/users'
-          Component={() => isAuthed ? <UsersPage /> : <Navigate to="/login" replace={true} />} />
-      </Routes>
+      <div className='app-wrapper'>
+        <Routes>
+          <Route path='/'
+            Component={() => isAuthed ? <HomePage /> : <Navigate to="/login" replace={true} />} />
+          <Route path='/login'
+            Component={() => <LoginPage />} />
+          <Route path='/register'
+            Component={() => <RegisterPage />} />
+          <Route path='/todos'
+            Component={() => isAuthed ? <TodosPage /> : <Navigate to="/login" replace={true} />} />
+          <Route path='/users'
+            Component={() => isAuthed ? <UsersPage /> : <Navigate to="/login" replace={true} />} />
+        </Routes>
+      </div>
     </div>
   );
 }

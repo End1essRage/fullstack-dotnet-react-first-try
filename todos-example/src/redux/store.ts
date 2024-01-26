@@ -4,7 +4,6 @@ import authReducer from "./authSlice";
 
 export const store = configureStore({
 	reducer: {
-		//имя: объект редьюсера
 		todos: todosReducer,
 		auth: authReducer
 	}

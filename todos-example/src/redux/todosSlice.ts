@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "../api/api";
-import { API_TODOS } from "../api/routes";
+import { API_TODOS } from "../constants/apiRoutes";
 import { loadValue } from "../services/sessionStorage";
 
 interface TodoState {

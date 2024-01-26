@@ -4,18 +4,28 @@
   box-sizing: border-box;
 }
 
-.DEV-wrapper {
+.dev-wrapper {
   background-color: aqua;
   display: flex;
 }
 
-.DEV-route-link {
+.dev-route-link {
   padding: 10px 5px 5px 10px;
   margin: 10px;
   text-align: center;
   background-color: cadetblue;
 }
 
-.DEV-route-link a {
+.app-wrapper {
+  /* display: flex;
+    justify-content: center;
+    align-items: center;*/
+  min-height: 100vh;
+  background: url('D:\Projects\FullStack\TestTodoApp\todos-example\src\assets\LoginPageBackround.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.dev-route-link a {
   text-decoration: none;
 }

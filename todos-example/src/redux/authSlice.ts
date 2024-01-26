@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../api/api";
-import { API_LOGIN, API_REFRESH, API_REGISTER } from "../api/routes";
+import { API_LOGIN, API_REFRESH, API_REGISTER } from "../constants/apiRoutes";
 import { setValue } from "../services/sessionStorage";
+import { STATUS_BLANK, STATUS_FULLFILLED, STATUS_PENDING, STATUS_REJECTED } from "../constants/statuses";
 
 interface AuthState {
 	status: string,
@@ -10,19 +11,25 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-	status: '',
+	status: STATUS_BLANK,
 	error: '',
 	authenticated: false
 }
 
-interface UserDto {
-	userName: string;
-	password: string;
+interface LoginDto {
+	userName: string,
+	password: string,
+}
+
+interface RegisterDto {
+	email: string,
+	userName: string,
+	password: string,
 }
 
 export const login = createAsyncThunk(
 	'auth/login',
-	async (user: UserDto, { rejectWithValue, dispatch }) => {
+	async (user: LoginDto, { rejectWithValue }) => {
 		try {
 			const response = await axios.post<string>(API_LOGIN, user, { withCredentials: true });
 
@@ -47,7 +54,7 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
 	'auth/register',
-	async (user: UserDto, { rejectWithValue, dispatch }) => {
+	async (user: RegisterDto, { rejectWithValue }) => {
 		try {
 			const response = await axios.post<string>(API_REGISTER, user);
 
@@ -56,7 +63,7 @@ export const register = createAsyncThunk(
 			}
 
 			const data = await response.data;
-
+			setValue('token', data);
 			return data;
 		}
 		catch (error) {
@@ -72,7 +79,7 @@ export const register = createAsyncThunk(
 
 export const refreshToken = createAsyncThunk(
 	'auth/refresh-token',
-	async (_, { rejectWithValue, dispatch }) => {
+	async (_, { rejectWithValue }) => {
 		try {
 			const response = await axios.post<string>(API_REFRESH, {}, { withCredentials: true });
 
@@ -101,7 +108,6 @@ export const authSlice = createSlice({
 	reducers: {
 		setAuthenticated(state: AuthState) {
 			state.authenticated = true;
-			state.error = '';
 		},
 
 		setUnAuthenticated(state) {
@@ -111,21 +117,36 @@ export const authSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder.addCase(login.fulfilled, (state, action) => {
+			state.status = STATUS_FULLFILLED;
 			state.authenticated = true;
 		});
 		builder.addCase(register.fulfilled, (state, action) => {
+			state.status = STATUS_FULLFILLED;
+			state.authenticated = true;
 		});
 		builder.addCase(refreshToken.fulfilled, (state, action) => {
+			state.status = STATUS_FULLFILLED;
 			state.authenticated = true;
-			console.log(action.payload);
+		});
+		builder.addCase(login.pending, (state, action) => {
+			state.status = STATUS_PENDING;
+		});
+		builder.addCase(register.pending, (state, action) => {
+			state.status = STATUS_PENDING;
+		});
+		builder.addCase(refreshToken.pending, (state, action) => {
+			state.status = STATUS_PENDING;
 		});
 		builder.addCase(login.rejected, (state, action) => {
+			state.status = STATUS_REJECTED;
 			console.log(action.payload);
 		});
 		builder.addCase(register.rejected, (state, action) => {
+			state.status = STATUS_REJECTED;
 			console.log(action.payload);
 		});
 		builder.addCase(refreshToken.rejected, (state, action) => {
+			state.status = STATUS_REJECTED;
 			console.log(action.payload);
 		});
 	},

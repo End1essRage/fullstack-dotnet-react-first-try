@@ -32,6 +32,7 @@ namespace TodosBackend.Services
     
             await _repository.UpdateRefreshToken(user.Id, refreshToken);
         }
+
         public async Task<User> FindUserByRefreshToken(string refreshToken)
         {
             return await _repository.FindByRefreshToken(refreshToken);
