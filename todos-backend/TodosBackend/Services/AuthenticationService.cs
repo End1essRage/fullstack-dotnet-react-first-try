@@ -50,7 +50,7 @@ namespace TodosBackend.Services
             {
                 return new TokenResponse(false, "Token Invalid");
             }
-            if (user.TokenExpires < DateTime.Now)
+            if (user.TokenExpires < DateTime.Now.ToUniversalTime())
             {
                 return new TokenResponse(false, "Token Expired");
             }
@@ -86,7 +86,6 @@ namespace TodosBackend.Services
         private void WriteRefreshToken(User user, RefreshToken token)
         {
             _userService.UpdateUserRefreshToken(user, token);
-            Console.WriteLine("writing " + token.Token);
         }
 
         private RefreshToken CreateRefreshToken(User user)
@@ -95,8 +94,8 @@ namespace TodosBackend.Services
             {
                 Id = user.Id,
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Created = DateTime.Now,
-                Expires = DateTime.Now.AddDays(10)
+                Created = DateTime.Now.ToUniversalTime(),
+                Expires = DateTime.Now.AddDays(10).ToUniversalTime()
             };
             return token;
         }

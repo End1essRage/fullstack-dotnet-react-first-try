@@ -4,9 +4,10 @@ namespace TodosBackend.Data.Abstractions
 {
     public interface IUserRepository
     {
-        Task<User> FindByUserNameAsync(string userName);
-        Task<User> CreateUserAsync(User user);
-        Task UpdateRefreshToken(int userId, RefreshToken refreshToken);
+        Task<User> FindByUserName(string userName);
+        Task<User> CreateUser(User user);
+        Task UpdateRefreshToken(User user, RefreshToken refreshToken);
         Task<User> FindByRefreshToken(string refreshToken);
+        Task<User> FindById(int id);
     }
 }

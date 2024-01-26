@@ -17,11 +17,12 @@ namespace TodosBackend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            //string connectionString = "User ID=user;Password=password;Server=localhost;Port=5433;Database=postgres;";
-            //builder.Services.AddDbContext<TodosDbContext>(options =>
-            //    options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TodosBackend")));
+            //Подключаю DBContext, использую postgres и проводник Npgsql
+            string connectionString = builder.Configuration.GetSection("AppSettings:ConnectionString").Value;
+            builder.Services.AddDbContext<TodosDbContext>(options =>
+                options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TodosBackend")));
 
+            //Настройка политики кросс-доменных запросов
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -34,18 +35,18 @@ namespace TodosBackend
                     });
             });
 
-            builder.Services.AddSingleton<FakeDbContext, FakeDbContext>();
-
-            builder.Services.AddScoped<ITodoRepository, FakeTodosRepository>();
-            builder.Services.AddScoped<IUserRepository, FakeUserRepository>();
+            builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();  
 
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            
             builder.Services.AddEndpointsApiExplorer();
+
+            //Включение возможности авторизоваться для swagger
             builder.Services.AddSwaggerGen(options =>
             {
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -58,6 +59,8 @@ namespace TodosBackend
 
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
             });
+
+            //Настройка аутентификации
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -73,13 +76,14 @@ namespace TodosBackend
             var app = builder.Build();
 
             app.UseCors();
-            // Configure the HTTP request pipeline.
+            
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseHttpsRedirection();
+
+            //app.UseHttpsRedirection();
 
             app.UseAuthentication();
 

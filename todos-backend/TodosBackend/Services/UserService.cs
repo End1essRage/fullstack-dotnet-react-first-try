@@ -18,19 +18,16 @@ namespace TodosBackend.Services
 
         public async Task CreateUserAsync(User user)
         {
-            if (await _repository.FindByUserNameAsync(user.UserName) != null)
+            if (await _repository.FindByUserName(user.UserName) != null)
                 return;
 
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
-            await _repository.CreateUserAsync(user);
+            await _repository.CreateUser(user);
         }
 
         public async Task UpdateUserRefreshToken(User user, RefreshToken refreshToken)
         {
-            if (await _repository.FindByUserNameAsync(user.UserName) == null)
-                return;
-    
-            await _repository.UpdateRefreshToken(user.Id, refreshToken);
+            await _repository.UpdateRefreshToken(user, refreshToken);
         }
 
         public async Task<User> FindUserByRefreshToken(string refreshToken)
@@ -40,7 +37,7 @@ namespace TodosBackend.Services
 
         public async Task<User> FindByUserNameAsync(string userName)
         {
-            return await _repository.FindByUserNameAsync(userName);
+            return await _repository.FindByUserName(userName);
         }
 
         public async Task<User> GetCurrentUser()
