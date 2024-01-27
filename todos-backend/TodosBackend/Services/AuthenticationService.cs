@@ -65,7 +65,7 @@ namespace TodosBackend.Services
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("user_id", user.Id + ""),
                 new Claim(ClaimTypes.Role, user.Role)
             };
 

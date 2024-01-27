@@ -13,10 +13,9 @@ namespace TodosBackend.Data
             _context = context;
         }
 
-        public async Task<Todo> AddTodo(string title)
+        public async Task<Todo> AddTodo(Todo todo)
         {
-            var newTodo = new Todo { Title = title };
-            var result = _context.Todos.Add(newTodo);
+            var result = _context.Todos.Add(todo);
             await _context.SaveChangesAsync();
 
             return result.Entity;
@@ -33,6 +32,11 @@ namespace TodosBackend.Data
         public async Task<List<Todo>> GetAllTodos()
         {
             return await _context.Todos.ToListAsync();
+        }
+
+        public async Task<List<Todo>> GetUserTodos(int userId)
+        {
+            return await _context.Todos.Where(c => c.User.Id == userId).ToListAsync();
         }
 
         public async Task<Todo> GetTodoById(int id)

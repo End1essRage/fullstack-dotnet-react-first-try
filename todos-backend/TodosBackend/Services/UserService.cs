@@ -42,20 +42,21 @@ namespace TodosBackend.Services
 
         public async Task<User> GetCurrentUser()
         {
-            var userName = GetUserNameFromClaim();
-
-            return await FindByUserNameAsync(userName);
-        }
-
-        private string GetUserNameFromClaim()
-        {
-            var result = String.Empty;
-
-            if (_httpContextAccessor.HttpContext != null)
+            int userId = GetUserIdFromClaim();
+            if(userId >= 0)
             {
-                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+                return await _repository.FindById(userId);
             }
 
+            return null;
+        }
+        private int GetUserIdFromClaim()
+        {
+            int result = -1;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                result = Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirstValue("user_id"));
+            }
             return result;
         }
     }

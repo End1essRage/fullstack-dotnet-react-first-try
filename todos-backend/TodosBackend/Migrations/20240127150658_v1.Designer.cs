@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TodosBackend.Data;
@@ -11,9 +12,10 @@ using TodosBackend.Data;
 namespace TodosBackend.Migrations
 {
     [DbContext(typeof(TodosDbContext))]
-    partial class TodosDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240127150658_v1")]
+    partial class v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +49,7 @@ namespace TodosBackend.Migrations
 
                     b.HasIndex("user_id");
 
-                    b.ToTable("todos", (string)null);
+                    b.ToTable("todos");
                 });
 
             modelBuilder.Entity("TodosBackend.Models.User", b =>
@@ -94,7 +96,7 @@ namespace TodosBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("TodosBackend.Models.Todo", b =>

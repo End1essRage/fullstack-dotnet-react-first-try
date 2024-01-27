@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using TodosBackend.CommunicationModes;
 using TodosBackend.Data.Abstractions;
 using TodosBackend.Models;
+using TodosBackend.Services;
+using TodosBackend.Services.Abstractions;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TodosBackend.Controllers
@@ -12,11 +14,12 @@ namespace TodosBackend.Controllers
 	public class TodosController : ControllerBase
 	{
 		private ITodoRepository _repository;
-
-		public TodosController(ITodoRepository repository)
+        private IUserService _userService;
+        public TodosController(ITodoRepository repository, IUserService userService)
 		{
 			_repository = repository;
-		}
+			_userService = userService;
+        }
 
 		[HttpGet]
         [AllowAnonymous]
@@ -26,20 +29,31 @@ namespace TodosBackend.Controllers
 			return Ok(items);
 		}
 
-		[HttpPost]
+        [Route("my")]
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<Todo>>> GetUserTodos()
+        {
+            var curUser = await _userService.GetCurrentUser();
+            if (curUser == null)
+                return BadRequest("User not found");
+
+            var items = await _repository.GetUserTodos(curUser.Id);
+
+            return Ok(items);
+        }
+
+        [HttpPost]
         [Authorize]
         public async Task<ActionResult<Todo>> CreateNew(TodoDTO dto)
 		{
-			Todo newTodo;
+            var curUser = await _userService.GetCurrentUser();
+            if (curUser == null)
+                return BadRequest("User not found");
 
-			try
-			{
-                newTodo = await _repository.AddTodo(dto.Title);
-			}
-			catch (Exception e)
-			{
-				return BadRequest(e.Message);
-			}
+            var newTodo = new Todo() { Title = dto.Title, User = curUser };
+
+            var result = await _repository.AddTodo(newTodo);
 
 			return Ok(newTodo);
 		}

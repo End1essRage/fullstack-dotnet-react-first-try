@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,6 +15,8 @@ namespace TodosBackend.Models
         [Column("title")]
         public string Title { get; set; }
         [Column("completed")]
-        public bool Completed { get; set; }
+        public bool Completed { get; set; } 
+        [ForeignKey("user_id")]
+        public User User { get; set; }
     }
 }
