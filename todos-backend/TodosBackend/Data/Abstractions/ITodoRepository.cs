@@ -6,13 +6,9 @@ using TodosBackend.Models;
 
 namespace TodosBackend.Data.Abstractions
 {
-    public interface ITodoRepository
+    public interface ITodoRepository : IRepository<Todo>
     {
-        public Task<Todo> GetTodoById(int id);
-        public Task<Todo> AddTodo(Todo todo);
-        public Task<List<Todo>> GetAllTodos();
         public Task ToggleComplete(int id);
-        public Task DeleteTodo(int id);
         public Task<List<Todo>> GetUserTodos(int userId);
     }
 }

@@ -9,5 +9,6 @@ namespace TodosBackend.Services.Abstractions
         Task<User> GetCurrentUser();
         Task UpdateUserRefreshToken(User user, RefreshToken refreshToken);
         Task<User> FindUserByRefreshToken(string refreshToken);
+        int GetCurrentUserId();
     }
 }

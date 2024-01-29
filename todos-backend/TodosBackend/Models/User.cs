@@ -3,10 +3,8 @@
 namespace TodosBackend.Models
 {
     [Table("users")]
-    public class User
+    public class User : BaseModel
     {
-        [Column("_id")]
-        public int Id { get; set; }
         [Column("email")]
         public string Email { get; set; }
         [Column("username")]

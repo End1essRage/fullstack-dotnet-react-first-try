@@ -40,14 +40,15 @@ namespace TodosBackend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.Property<int>("user_id")
-                        .HasColumnType("integer");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("user_id");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("todos", (string)null);
+                    b.ToTable("todos");
                 });
 
             modelBuilder.Entity("TodosBackend.Models.User", b =>
@@ -94,14 +95,14 @@ namespace TodosBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("TodosBackend.Models.Todo", b =>
                 {
                     b.HasOne("TodosBackend.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("user_id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

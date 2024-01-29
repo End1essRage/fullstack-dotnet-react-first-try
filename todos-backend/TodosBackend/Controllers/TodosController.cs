@@ -21,12 +21,12 @@ namespace TodosBackend.Controllers
 			_userService = userService;
         }
 
-		[HttpGet]
+        [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<List<Todo>>> GetAll()
+        public async Task<ActionResult<List<Todo>>> GetSome([FromQuery] int count)
 		{
-			var items = await _repository.GetAllTodos();
-			return Ok(items);
+			var items = await _repository.GetSomeAsync(count);
+            return Ok(items);
 		}
 
         [Route("my")]
@@ -34,11 +34,11 @@ namespace TodosBackend.Controllers
         [Authorize]
         public async Task<ActionResult<List<Todo>>> GetUserTodos()
         {
-            var curUser = await _userService.GetCurrentUser();
-            if (curUser == null)
+            var curUserId = _userService.GetCurrentUserId();
+            if (curUserId < 0)
                 return BadRequest("User not found");
 
-            var items = await _repository.GetUserTodos(curUser.Id);
+            var items = await _repository.GetUserTodos(curUserId);
 
             return Ok(items);
         }
@@ -47,22 +47,23 @@ namespace TodosBackend.Controllers
         [Authorize]
         public async Task<ActionResult<Todo>> CreateNew(TodoDTO dto)
 		{
-            var curUser = await _userService.GetCurrentUser();
-            if (curUser == null)
+            var curUserId = _userService.GetCurrentUserId();
+            if (curUserId < 0)
                 return BadRequest("User not found");
 
-            var newTodo = new Todo() { Title = dto.Title, User = curUser };
+            var newTodo = new Todo() { Title = dto.Title, UserId = curUserId };
 
-            var result = await _repository.AddTodo(newTodo);
+            var result = _repository.Create(newTodo);
+            await _repository.SaveChangesAsync();
 
-			return Ok(newTodo);
+			return Ok(result);
 		}
 
 		[HttpPatch]
         [Authorize]
         public async Task<ActionResult> ToggleComplete(int id)
 		{
-			var item = await _repository.GetTodoById(id);
+			var item = await _repository.GetOneAsync(id);
 			if(item == null)
 			{
 				return BadRequest();
@@ -77,14 +78,14 @@ namespace TodosBackend.Controllers
         [Authorize]
         public async Task<ActionResult> DeleteTodo(int id)
 		{
-            var item = await _repository.GetTodoById(id);
+            var item = await _repository.GetOneAsync(id);
             if (item == null)
             {
                 return BadRequest();
             }
 
-            await _repository.DeleteTodo(id);
-
+            _repository.Delete(item);
+            await _repository.SaveChangesAsync();
             return Ok();
         }
     }

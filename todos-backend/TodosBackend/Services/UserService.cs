@@ -22,7 +22,8 @@ namespace TodosBackend.Services
                 return;
 
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
-            await _repository.CreateUser(user);
+            _repository.Create(user);
+            _repository.SaveChangesAsync();
         }
 
         public async Task UpdateUserRefreshToken(User user, RefreshToken refreshToken)
@@ -45,11 +46,16 @@ namespace TodosBackend.Services
             int userId = GetUserIdFromClaim();
             if(userId >= 0)
             {
-                return await _repository.FindById(userId);
+                return await _repository.GetOneAsync(userId);
             }
 
             return null;
         }
+        public int GetCurrentUserId()
+        {
+            return GetUserIdFromClaim();
+        }
+
         private int GetUserIdFromClaim()
         {
             int result = -1;

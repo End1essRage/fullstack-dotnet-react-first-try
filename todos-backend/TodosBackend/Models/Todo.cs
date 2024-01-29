@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 namespace TodosBackend.Models
 {
     [Table("todos")]
-    public class Todo
+    public class Todo : BaseModel
     {
-        [Column("_id")]
-        public int Id { get; set; }
         [Column("title")]
         public string Title { get; set; }
         [Column("completed")]
-        public bool Completed { get; set; } 
+        public bool Completed { get; set; }
+        [Column("user_id")]
         [ForeignKey("user_id")]
-        public User User { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

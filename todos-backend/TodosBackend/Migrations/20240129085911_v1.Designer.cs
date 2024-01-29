@@ -12,7 +12,7 @@ using TodosBackend.Data;
 namespace TodosBackend.Migrations
 {
     [DbContext(typeof(TodosDbContext))]
-    [Migration("20240127150658_v1")]
+    [Migration("20240129085911_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,12 +42,13 @@ namespace TodosBackend.Migrations
                         .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.Property<int>("user_id")
-                        .HasColumnType("integer");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("user_id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("todos");
                 });
@@ -103,7 +104,7 @@ namespace TodosBackend.Migrations
                 {
                     b.HasOne("TodosBackend.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("user_id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -5,51 +5,27 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace TodosBackend.Data
 {
-    public class TodoRepository : ITodoRepository
+    public class TodoRepository : Repository<Todo>, ITodoRepository
     {
         private TodosDbContext _context;
-        public TodoRepository(TodosDbContext context)
+        public TodoRepository(TodosDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public async Task<Todo> AddTodo(Todo todo)
-        {
-            var result = _context.Todos.Add(todo);
-            await _context.SaveChangesAsync();
-
-            return result.Entity;
-        }
-
-        public async Task DeleteTodo(int id)
-        {
-            var entity = await GetTodoById(id);
-            _context.Todos.Remove(entity);
-
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<List<Todo>> GetAllTodos()
-        {
-            return await _context.Todos.ToListAsync();
-        }
-
         public async Task<List<Todo>> GetUserTodos(int userId)
         {
-            return await _context.Todos.Where(c => c.User.Id == userId).ToListAsync();
-        }
-
-        public async Task<Todo> GetTodoById(int id)
-        {
-            return await _context.Todos.Where(u => u.Id == id).FirstOrDefaultAsync();
+            return await _context.Todos.Where(c => c.UserId == userId).ToListAsync();
         }
 
         public async Task ToggleComplete(int id)
         {
-            var entity = await GetTodoById(id);
+            var entity = await GetOneAsync(id);
+
             entity.Completed = !entity.Completed;
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+
+            await SaveChangesAsync();
         }
     }
 }
