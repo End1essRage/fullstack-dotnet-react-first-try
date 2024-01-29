@@ -7,8 +7,8 @@ namespace TodosBackend.Data.DataAccess
 {
     public class TodoRepository : Repository<Todo>, ITodoRepository
     {
-        private TodosDbContext _context;
-        public TodoRepository(TodosDbContext context) : base(context)
+        private ApplicationDbContext _context;
+        public TodoRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
@@ -21,6 +21,8 @@ namespace TodosBackend.Data.DataAccess
         public async Task ToggleComplete(int id)
         {
             var entity = await GetOneAsync(id);
+            if (entity == null)
+                throw new ArgumentNullException();
 
             entity.Completed = !entity.Completed;
             _context.Entry(entity).State = EntityState.Modified;

@@ -7,9 +7,9 @@ using TodosBackend.Data.Models;
 
 namespace TodosBackend.Data.DataAccess
 {
-    public class TodosDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public TodosDbContext(DbContextOptions<TodosDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }

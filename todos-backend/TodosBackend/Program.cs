@@ -19,7 +19,7 @@ namespace TodosBackend
 
             //Подключаю DBContext, использую postgres и проводник Npgsql
             string connectionString = builder.Configuration.GetSection("AppSettings:ConnectionString").Value;
-            builder.Services.AddDbContext<TodosDbContext>(options =>
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TodosBackend")));
 
             //Настройка политики кросс-доменных запросов
