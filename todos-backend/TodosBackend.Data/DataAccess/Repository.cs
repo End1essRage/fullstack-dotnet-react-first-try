@@ -6,8 +6,8 @@ namespace TodosBackend.Data.DataAccess
 {
     public class Repository<T> : IRepository<T> where T : BaseModel
     {
-        private TodosDbContext _context;
-        public Repository(TodosDbContext context)
+        private ApplicationDbContext _context;
+        public Repository(ApplicationDbContext context)
         {
             _context = context;
         }

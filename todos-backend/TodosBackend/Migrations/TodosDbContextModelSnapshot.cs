@@ -10,7 +10,7 @@ using TodosBackend.Data.DataAccess;
 
 namespace TodosBackend.Migrations
 {
-    [DbContext(typeof(TodosDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class TodosDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

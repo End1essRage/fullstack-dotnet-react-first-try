@@ -11,7 +11,7 @@ using TodosBackend.Data.DataAccess;
 
 namespace TodosBackend.Migrations
 {
-    [DbContext(typeof(TodosDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240129085911_v1")]
     partial class v1
     {

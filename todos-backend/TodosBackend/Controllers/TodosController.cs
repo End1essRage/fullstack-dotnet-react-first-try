@@ -22,23 +22,28 @@ namespace TodosBackend.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult<List<Todo>>> GetSome([FromQuery] int count)
-		{
-			var items = await _repository.GetSomeAsync(count);
-            return Ok(items);
-		}
-
-        [Route("my")]
-        [HttpGet]
         [Authorize]
-        public async Task<ActionResult<List<Todo>>> GetUserTodos()
+        public async Task<ActionResult<List<Todo>>> GetUserTodos([FromQuery] int count)
         {
             var curUserId = _userService.GetCurrentUserId();
             if (curUserId < 0)
                 return BadRequest("User not found");
 
-            var items = await _repository.GetUserTodos(curUserId);
+            var items = await _repository.GetUserTodos(curUserId, count);
+
+            return Ok(items);
+        }
+
+        [Route("paged")]
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<List<Todo>>> GetUserTodosPaged([FromQuery] int page, [FromQuery] int size)
+        {
+            var curUserId = _userService.GetCurrentUserId();
+            if (curUserId < 0)
+                return BadRequest("User not found");
+
+            var items = await _repository.GetUserTodosPaged(curUserId, page, size);
 
             return Ok(items);
         }
