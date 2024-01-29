@@ -1,11 +1,10 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TodosBackend.Models
+namespace TodosBackend.Data.Models
 {
     [Table("todos")]
     public class Todo : BaseModel

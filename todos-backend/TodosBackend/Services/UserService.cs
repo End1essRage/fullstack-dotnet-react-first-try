@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
-using TodosBackend.Data.Abstractions;
-using TodosBackend.Models;
+using TodosBackend.Data.DataAccess.Abstractions;
+using TodosBackend.Data.Models;
 using TodosBackend.Services.Abstractions;
+using TodosBackend.CommunicationModels.Tokens;
 
 namespace TodosBackend.Services
 {

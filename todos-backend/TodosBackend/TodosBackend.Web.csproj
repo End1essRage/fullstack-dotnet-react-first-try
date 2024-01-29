@@ -21,4 +21,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="6.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TodosBackend.CommunicationModels\TodosBackend.CommunicationModels.csproj" />
+    <ProjectReference Include="..\TodosBackend.Data\TodosBackend.Data.csproj" />
+  </ItemGroup>
+
 </Project>

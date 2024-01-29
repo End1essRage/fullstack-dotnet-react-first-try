@@ -4,8 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using TodosBackend.CommunicationModes;
-using TodosBackend.Models;
+using TodosBackend.CommunicationModels.Tokens;
+using TodosBackend.Data.Models;
 using TodosBackend.Services.Abstractions;
 
 namespace TodosBackend.Services

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TodosBackend.Models;
+using TodosBackend.Data.Models;
 
-namespace TodosBackend.Data
+namespace TodosBackend.Data.DataAccess
 {
     public class TodosDbContext : DbContext
     {

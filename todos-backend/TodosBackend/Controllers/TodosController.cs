@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TodosBackend.CommunicationModes;
-using TodosBackend.Data.Abstractions;
-using TodosBackend.Models;
+using TodosBackend.CommunicationModels.DTOs;
+using TodosBackend.Data.DataAccess.Abstractions;
+using TodosBackend.Data.Models;
 using TodosBackend.Services;
 using TodosBackend.Services.Abstractions;
 using static System.Net.Mime.MediaTypeNames;

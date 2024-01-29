@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodosBackend.Data.Abstractions;
-using TodosBackend.Models;
+using TodosBackend.Data.DataAccess.Abstractions;
+using TodosBackend.Data.Models;
+using TodosBackend.CommunicationModels.Tokens;
 
-namespace TodosBackend.Data
+namespace TodosBackend.Data.DataAccess
 {
     public class UserRepository : Repository<User>, IUserRepository
     {

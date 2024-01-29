@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodosBackend.Data.Abstractions;
-using TodosBackend.Models;
+using TodosBackend.Data.DataAccess.Abstractions;
+using TodosBackend.Data.Models;
 
-namespace TodosBackend.Data
+namespace TodosBackend.Data.DataAccess
 {
     public class Repository<T> : IRepository<T> where T : BaseModel
     {

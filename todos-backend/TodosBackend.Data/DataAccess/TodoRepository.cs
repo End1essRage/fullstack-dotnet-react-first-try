@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TodosBackend.Data.Abstractions;
-using TodosBackend.Models;
+using TodosBackend.Data.DataAccess.Abstractions;
+using TodosBackend.Data.Models;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace TodosBackend.Data
+namespace TodosBackend.Data.DataAccess
 {
     public class TodoRepository : Repository<Todo>, ITodoRepository
     {

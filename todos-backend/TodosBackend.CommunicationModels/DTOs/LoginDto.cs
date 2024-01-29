@@ -1,4 +1,4 @@
-﻿namespace TodosBackend.CommunicationModes
+﻿namespace TodosBackend.CommunicationModels.DTOs
 {
     public class LoginDto
     {

@@ -1,6 +1,7 @@
-﻿using TodosBackend.Models;
+﻿using TodosBackend.Data.Models;
+using TodosBackend.CommunicationModels.Tokens;
 
-namespace TodosBackend.Data.Abstractions
+namespace TodosBackend.Data.DataAccess.Abstractions
 {
     public interface IUserRepository : IRepository<User>
     {

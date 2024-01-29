@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TodosBackend.CommunicationModes;
-using TodosBackend.Models;
+using TodosBackend.CommunicationModels.DTOs;
+using TodosBackend.CommunicationModels.Tokens;
+using TodosBackend.Data.Models;
 using TodosBackend.Services.Abstractions;
 
 namespace TodosBackend.Controllers

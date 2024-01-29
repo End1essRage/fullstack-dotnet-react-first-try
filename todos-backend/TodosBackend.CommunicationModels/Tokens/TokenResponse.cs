@@ -1,8 +1,6 @@
-﻿using TodosBackend.Models;
-
-namespace TodosBackend.CommunicationModes
+﻿namespace TodosBackend.CommunicationModels.Tokens
 {
-    public class TokenResponse: BaseResponse
+    public class TokenResponse : BaseResponse
     {
         public string AccessToken { get; set; } = string.Empty;
         public RefreshToken? RefreshToken { get; set; }

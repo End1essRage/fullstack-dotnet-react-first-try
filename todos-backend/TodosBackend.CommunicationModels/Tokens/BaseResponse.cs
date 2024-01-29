@@ -1,4 +1,4 @@
-﻿namespace TodosBackend.CommunicationModes
+﻿namespace TodosBackend.CommunicationModels.Tokens
 {
     public abstract class BaseResponse
     {

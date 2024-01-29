@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TodosBackend.Data;
-using TodosBackend.Data.Abstractions;
+using TodosBackend.Data.DataAccess.Abstractions;
 using TodosBackend.Services.Abstractions;
 using TodosBackend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using TodosBackend.Data.DataAccess;
 
 namespace TodosBackend
 {

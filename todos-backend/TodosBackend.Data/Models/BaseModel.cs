@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TodosBackend.Models
+namespace TodosBackend.Data.Models
 {
     public class BaseModel
     {

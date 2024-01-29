@@ -1,4 +1,4 @@
-﻿using TodosBackend.CommunicationModes;
+﻿using TodosBackend.CommunicationModels.Tokens;
 
 namespace TodosBackend.Services.Abstractions
 {

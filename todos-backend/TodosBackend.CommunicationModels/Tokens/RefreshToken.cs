@@ -1,4 +1,4 @@
-﻿namespace TodosBackend.Models
+﻿namespace TodosBackend.CommunicationModels.Tokens
 {
     public class RefreshToken
     {

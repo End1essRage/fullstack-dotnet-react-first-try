@@ -1,6 +1,6 @@
-﻿using TodosBackend.Models;
+﻿using TodosBackend.Data.Models;
 
-namespace TodosBackend.Data.Abstractions
+namespace TodosBackend.Data.DataAccess.Abstractions
 {
     public interface IRepository <T> where T : BaseModel
     {
