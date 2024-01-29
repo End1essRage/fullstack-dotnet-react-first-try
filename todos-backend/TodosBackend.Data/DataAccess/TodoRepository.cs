@@ -13,9 +13,9 @@ namespace TodosBackend.Data.DataAccess
             _context = context;
         }
 
-        public async Task<List<Todo>> GetUserTodos(int userId)
+        public async Task<List<Todo>> GetUserTodos(int userId, int count)
         {
-            return await _context.Todos.Where(c => c.UserId == userId).ToListAsync();
+            return await _context.Todos.Where(c => c.UserId == userId).Take(count).ToListAsync();
         }
 
         public async Task ToggleComplete(int id)
