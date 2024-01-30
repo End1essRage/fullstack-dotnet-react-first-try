@@ -1,10 +1,12 @@
-﻿namespace TodosBackend.Web.Services.Abstractions
+﻿using TodosBackend.Data.Models;
+
+namespace TodosBackend.Web.Services.Abstractions
 {
     public interface ICodeConfirmationService
     {
-        Task CreateAccountConfirmation(int userId);
-        Task<bool> TryConfirmAccount(int userId, string code);
-        Task CreateLogInConfirmation(int userId);
-        Task<bool> TryConfirmLogIn(int userId, string code);
+        Task CreateAccountConfirmationAsync(User user);
+        Task<bool> TryConfirmAccountAsync(int userId, string code);
+        Task CreateLogInConfirmationAsync(User user);
+        Task<bool> TryConfirmLogInAsync(int userId, string code);
     }
 }

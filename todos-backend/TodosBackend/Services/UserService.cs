@@ -27,12 +27,12 @@ namespace TodosBackend.Web.Services
             await _repository.SaveChangesAsync();
         }
 
-        public async Task UpdateUserRefreshToken(User user, RefreshToken refreshToken)
+        public async Task UpdateUserRefreshTokenAsync(User user, RefreshToken refreshToken)
         {
             await _repository.UpdateRefreshToken(user, refreshToken);
         }
 
-        public async Task<User> FindUserByRefreshToken(string refreshToken)
+        public async Task<User> FindUserByRefreshTokenAsync(string refreshToken)
         {
             return await _repository.FindByRefreshToken(refreshToken);
         }
@@ -42,7 +42,7 @@ namespace TodosBackend.Web.Services
             return await _repository.FindByUserName(userName);
         }
 
-        public async Task<User> GetCurrentUser()
+        public async Task<User> GetCurrentUserAsync()
         {
             int userId = GetUserIdFromClaim();
             if(userId >= 0)
@@ -68,7 +68,7 @@ namespace TodosBackend.Web.Services
             return result;
         }
 
-        public async Task ConfirmUser(int id)
+        public async Task ConfirmUserAsync(int id)
         {
             var user = await _repository.GetOneAsync(id);
             if(user != null)

@@ -22,11 +22,13 @@ namespace TodosBackend.Web.Controllers
         [HttpPost("confirmation/request")]
         public async Task<ActionResult> CreateConfirmation()
         {
-            int userId = _userService.GetCurrentUserId();
-            if (userId < 0)
+            var user = await _userService.GetCurrentUserAsync();
+            if (user == null)
                 return BadRequest();
+            if (user.Confirmed)
+                return BadRequest("you already confirmed");
 
-            await _confirmationService.CreateAccountConfirmation(userId);
+            await _confirmationService.CreateAccountConfirmationAsync(user);
 
             return Ok();
         }
@@ -38,12 +40,12 @@ namespace TodosBackend.Web.Controllers
             if(userId < 0)
                 return BadRequest();
 
-            var result = await _confirmationService.TryConfirmAccount(userId, code);
+            var result = await _confirmationService.TryConfirmAccountAsync(userId, code);
 
             if(!result)
                 return BadRequest();
 
-            await _userService.ConfirmUser(userId);
+            await _userService.ConfirmUserAsync(userId);
             return Ok();
         }
     }

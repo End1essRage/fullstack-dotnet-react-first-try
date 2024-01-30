@@ -43,7 +43,7 @@ namespace TodosBackend.Web.Services
 
         public async Task<TokenResponse> CreateAccessTokenAsync(string refreshToken)
         {
-            var user = await _userService.FindUserByRefreshToken(refreshToken);
+            var user = await _userService.FindUserByRefreshTokenAsync(refreshToken);
 
             if (user == null)
             {
@@ -84,7 +84,7 @@ namespace TodosBackend.Web.Services
 
         private void WriteRefreshToken(User user, RefreshToken token)
         {
-            _userService.UpdateUserRefreshToken(user, token);
+            _userService.UpdateUserRefreshTokenAsync(user, token);
         }
 
         private RefreshToken CreateRefreshToken(User user)

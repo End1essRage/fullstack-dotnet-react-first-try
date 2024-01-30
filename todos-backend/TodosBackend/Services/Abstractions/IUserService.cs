@@ -7,10 +7,10 @@ namespace TodosBackend.Web.Services.Abstractions
     {
         Task CreateUserAsync(User user);
         Task<User> FindByUserNameAsync(string userName);
-        Task<User> GetCurrentUser();
-        Task UpdateUserRefreshToken(User user, RefreshToken refreshToken);
-        Task<User> FindUserByRefreshToken(string refreshToken);
+        Task<User> GetCurrentUserAsync();
+        Task UpdateUserRefreshTokenAsync(User user, RefreshToken refreshToken);
+        Task<User> FindUserByRefreshTokenAsync(string refreshToken);
         int GetCurrentUserId();
-        Task ConfirmUser(int id);
+        Task ConfirmUserAsync(int id);
     }
 }

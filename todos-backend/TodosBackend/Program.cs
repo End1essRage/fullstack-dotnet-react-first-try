@@ -40,6 +40,7 @@ namespace TodosBackend
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
             builder.Services.AddTransient<ICodeConfirmationService, CodeConfirmationService>();
+            builder.Services.AddTransient<IEmailService, EmailService>();
 
             builder.Services.AddStackExchangeRedisCache(options => {
                 options.Configuration = "localhost";

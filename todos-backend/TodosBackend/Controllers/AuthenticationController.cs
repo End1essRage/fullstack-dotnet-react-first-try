@@ -37,7 +37,7 @@ namespace TodosBackend.Controllers
             user.PasswordHash = request.Password;
 
             await _userService.CreateUserAsync(user);
-            await _confirmationService.CreateAccountConfirmation(user.Id);
+            await _confirmationService.CreateAccountConfirmationAsync(user);
 
             var response = await _authService.CreateAccessTokenAsync(request.UserName, request.Password);
             SetRefreshToken(response.RefreshToken);
