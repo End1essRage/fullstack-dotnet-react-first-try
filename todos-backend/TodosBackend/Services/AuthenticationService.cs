@@ -6,9 +6,9 @@ using System.Security.Cryptography;
 using System.Text;
 using TodosBackend.CommunicationModels.Tokens;
 using TodosBackend.Data.Models;
-using TodosBackend.Services.Abstractions;
+using TodosBackend.Web.Services.Abstractions;
 
-namespace TodosBackend.Services
+namespace TodosBackend.Web.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
@@ -43,7 +43,6 @@ namespace TodosBackend.Services
 
         public async Task<TokenResponse> CreateAccessTokenAsync(string refreshToken)
         {
-            Console.WriteLine("refreshing " + refreshToken);
             var user = await _userService.FindUserByRefreshToken(refreshToken);
 
             if (user == null)

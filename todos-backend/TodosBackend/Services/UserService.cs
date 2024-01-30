@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
 using TodosBackend.Data.DataAccess.Abstractions;
 using TodosBackend.Data.Models;
-using TodosBackend.Services.Abstractions;
+using TodosBackend.Web.Services.Abstractions;
 using TodosBackend.CommunicationModels.Tokens;
 
-namespace TodosBackend.Services
+namespace TodosBackend.Web.Services
 {
     public class UserService: IUserService
     {
@@ -24,7 +24,7 @@ namespace TodosBackend.Services
 
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
             _repository.Create(user);
-            _repository.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
 
         public async Task UpdateUserRefreshToken(User user, RefreshToken refreshToken)
@@ -59,12 +59,24 @@ namespace TodosBackend.Services
 
         private int GetUserIdFromClaim()
         {
+            //TODO rework
             int result = -1;
             if (_httpContextAccessor.HttpContext != null)
             {
                 result = Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirstValue("user_id"));
             }
             return result;
+        }
+
+        public async Task ConfirmUser(int id)
+        {
+            var user = await _repository.GetOneAsync(id);
+            if(user != null)
+            {
+                user.Confirmed = true;
+            }
+            _repository.Update(user);
+            await _repository.SaveChangesAsync();
         }
     }
 }

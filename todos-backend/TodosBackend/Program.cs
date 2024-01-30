@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TodosBackend.Data.DataAccess.Abstractions;
-using TodosBackend.Services.Abstractions;
-using TodosBackend.Services;
+using TodosBackend.Web.Services.Abstractions;
+using TodosBackend.Web.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -20,7 +20,7 @@ namespace TodosBackend
             //Подключаю DBContext, использую postgres и проводник Npgsql
             string connectionString = builder.Configuration.GetSection("AppSettings:ConnectionString").Value;
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TodosBackend")));
+                options.UseNpgsql(connectionString, b => b.MigrationsAssembly("TodosBackend.Web")));
 
             //Настройка политики кросс-доменных запросов
             builder.Services.AddCors(options =>
@@ -38,7 +38,13 @@ namespace TodosBackend
             builder.Services.AddScoped<ITodoRepository, TodoRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();  
+            builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            builder.Services.AddTransient<ICodeConfirmationService, CodeConfirmationService>();
+
+            builder.Services.AddStackExchangeRedisCache(options => {
+                options.Configuration = "localhost";
+                options.InstanceName = "local";
+            });
 
             builder.Services.AddHttpContextAccessor();
 

@@ -13,11 +13,14 @@ namespace TodosBackend.Data.Models
         public string PasswordHash { get; set; }
         [Column("role")]
         public string Role { get; set; } = String.Empty;
+        [Column("confirmed")]
+        public bool Confirmed { get; set; } = false;
         [Column("refresh_token")]
         public string RefreshToken { get; set; } = String.Empty;
         [Column("token_created")]
         public DateTime TokenCreated { get; set; }
         [Column("token_expires")]
         public DateTime TokenExpires { get; set; }
+        
     }
 }

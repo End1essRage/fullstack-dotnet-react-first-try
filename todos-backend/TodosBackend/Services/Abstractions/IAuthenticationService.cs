@@ -1,6 +1,6 @@
 ﻿using TodosBackend.CommunicationModels.Tokens;
 
-namespace TodosBackend.Services.Abstractions
+namespace TodosBackend.Web.Services.Abstractions
 {
     public interface IAuthenticationService
     {

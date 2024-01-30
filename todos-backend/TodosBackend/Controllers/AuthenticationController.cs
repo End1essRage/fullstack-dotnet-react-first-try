@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using TodosBackend.CommunicationModels.DTOs;
 using TodosBackend.CommunicationModels.Tokens;
 using TodosBackend.Data.Models;
-using TodosBackend.Services.Abstractions;
+using TodosBackend.Web.Services;
+using TodosBackend.Web.Services.Abstractions;
 
 namespace TodosBackend.Controllers
 {
@@ -15,10 +16,13 @@ namespace TodosBackend.Controllers
     {
         private IUserService _userService;
         private IAuthenticationService _authService;
-        public AuthenticationController(IAuthenticationService authService, IUserService userService)
+        private ICodeConfirmationService _confirmationService;
+
+        public AuthenticationController(IAuthenticationService authService, IUserService userService, ICodeConfirmationService confirmationService)
         {
             _authService = authService;
             _userService = userService;
+            _confirmationService = confirmationService;
         }
 
         [HttpPost("register")]
@@ -33,6 +37,7 @@ namespace TodosBackend.Controllers
             user.PasswordHash = request.Password;
 
             await _userService.CreateUserAsync(user);
+            await _confirmationService.CreateAccountConfirmation(user.Id);
 
             var response = await _authService.CreateAccessTokenAsync(request.UserName, request.Password);
             SetRefreshToken(response.RefreshToken);

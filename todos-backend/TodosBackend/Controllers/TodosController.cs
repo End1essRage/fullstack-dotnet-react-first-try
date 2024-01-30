@@ -3,8 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TodosBackend.CommunicationModels.DTOs;
 using TodosBackend.Data.DataAccess.Abstractions;
 using TodosBackend.Data.Models;
-using TodosBackend.Services;
-using TodosBackend.Services.Abstractions;
+using TodosBackend.Web.Services.Abstractions;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace TodosBackend.Controllers

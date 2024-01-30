@@ -1,7 +1,7 @@
 ﻿using TodosBackend.Data.Models;
 using TodosBackend.CommunicationModels.Tokens;
 
-namespace TodosBackend.Services.Abstractions
+namespace TodosBackend.Web.Services.Abstractions
 {
     public interface IUserService
     {
@@ -11,5 +11,6 @@ namespace TodosBackend.Services.Abstractions
         Task UpdateUserRefreshToken(User user, RefreshToken refreshToken);
         Task<User> FindUserByRefreshToken(string refreshToken);
         int GetCurrentUserId();
+        Task ConfirmUser(int id);
     }
 }

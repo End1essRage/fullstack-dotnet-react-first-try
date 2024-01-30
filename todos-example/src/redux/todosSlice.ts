@@ -18,7 +18,14 @@ export const fetchTodos = createAsyncThunk(
 	'todos/fetchTodos',
 	async (_, { rejectWithValue }) => {
 		try {
-			const response = await axios(API_TODOS);
+			const response = await axios(API_TODOS, {
+				headers: {
+					'Authorization': 'Bearer ' + loadValue('token'),
+				},
+				params: {
+					count: 10
+				}
+			});
 
 			if (response.status !== 200) {
 				throw new Error('Server Error!');
